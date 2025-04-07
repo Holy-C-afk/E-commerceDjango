@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .product-detail {
+            display: flex;
+            margin-top: 30px;
+            gap: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .product-image {
+            flex: 1;
+        }
+
+        .product-image img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .product-info {
+            flex: 2;
+        }
+
+        .product-info h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .product-info p {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .product-price {
+            margin: 20px 0;
+        }
+
+        
+
+        .add-to-cart-btn {
+            display: inline-block;
+            background-color: #143253;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #3f3b47;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ product.name }}</h1>
+
+        <div class="product-detail">
+            <!-- Product Image -->
+            <div class="product-image">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+                <h1>{{ product.name }}</h1>
+                <p><strong>Category:</strong> {{ product.category }}</p>
+                <p><strong>Description:</strong> {{ product.description }}</p>
+
+                <!-- Price -->
+                <div class="product-price">
+                    {% if product.discounted_price %}
+                        <span class="original-price">${{ product.price }}</span>
+                        <span class="discounted-price">${{ product.discounted_price }}</span>
+                    {% else %}
+                        <span class="price"><strong>${{ product.price }}</strong></span>
+                    {% endif %}
+                </div>
+
+                <!-- Add to Cart Button -->
+                <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-btn">Add to Cart</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

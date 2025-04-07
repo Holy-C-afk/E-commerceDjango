@@ -1,0 +1,167 @@
+<style>
+    .original-price {
+        text-decoration: line-through;
+        color: gray;
+        margin-right: 5px;
+    }
+    /* General styling */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Heading styles */
+h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 24px;
+    margin-top: 20px;
+    text-align: right;
+    color: #444;
+}
+
+/* Table styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.table thead tr {
+    background-color: #007bff;
+    color: #fff;
+    text-align: left;
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+
+.table tbody tr:hover {
+    background-color: #eaf2ff;
+}
+
+.table th {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.table td {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Empty cart styling */
+.table tbody tr td[colspan='4'] {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+    padding: 20px;
+}
+
+/* Price styling */
+.original-price {
+    text-decoration: line-through;
+    color: #888;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+strong {
+    color: #007bff;
+    font-size: 16px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .table thead {
+        display: none;
+    }
+
+    .table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .table tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table tbody td:last-child {
+        border-bottom: none;
+    }
+
+    h3 {
+        font-size: 20px;
+        text-align: center;
+    }
+}
+
+</style>
+
+<div class="container mt-4">
+    <h2>{{ username }}'s Cart</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>
+                    {% if item.product.discounted_price %}
+                        <span class="original-price">${{ item.product.price }}</span>
+                        <strong>${{ item.product.discounted_price }}</strong>
+                    {% else %}
+                        ${{ item.product.price }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.product.discounted_price %}
+                        ${{ item.product.discounted_price|floatformat:2 }} *
+                    {% else %}
+                        ${{ item.product.price|floatformat:2 }} *
+                    {% endif %}
+                     {{ item.quantity }} = ${{ item.total_price|floatformat:2 }}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Your cart is empty.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Total: ${{ total_price|floatformat:2 }}</h3>
+</div>
